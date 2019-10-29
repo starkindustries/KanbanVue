@@ -1,18 +1,28 @@
 <template>
-  <div class="home">
+  <div class="wrapper">
     <!--<img alt="Vue logo" src="../assets/logo.png" />-->
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <Card person="Winnie" headerStyle="background-color: #9370db;" />
+    <Card person="Thomas" headerStyle="background-color: #ffa500;" />
+    <Card person="George" headerStyle="background-color: #98fb98;" />
+    <Card person="Fred" headerStyle="background-color: #fa8072;" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import Card from "@/components/Card.vue";
 
 export default {
   name: "home",
   components: {
-    HelloWorld
+    Card
   }
 };
 </script>
+
+<style>
+.wrapper {
+  display: flex;
+  margin-left: 25px;
+}
+</style>
