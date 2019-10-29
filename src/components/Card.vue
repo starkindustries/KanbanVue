@@ -1,8 +1,9 @@
 <template>
   <div class="card">
-    <div class="cardHeader" :style="headerStyle">{{ person }}</div>
-    <div class="cardItem">item1</div>
-    <div class="cardItem">item2</div>
+    <div class="cardHeader border" :style="headerStyle">{{ person }}</div>
+    <div class="cardItem border">item1</div>
+    <div class="cardItem border">item2</div>
+    <div class="addItem" v-on:click="addItem">Add Item</div>
   </div>
 </template>
 
@@ -12,6 +13,12 @@ export default {
   props: {
     person: String,
     headerStyle: String
+  },
+  methods: {
+    addItem() {
+      var test = prompt("Please add item", "");
+      console.log("add item from: " + this.person + " " + test);
+    }
   }
 };
 </script>
@@ -22,5 +29,11 @@ export default {
   /*background-color: black;*/
   flex: 1;
   margin: 0px 25px 0px 0px;
+}
+.border {
+  border: 1px solid gray;
+}
+.addItem {
+  color: gray;
 }
 </style>
