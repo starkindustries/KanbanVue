@@ -7,7 +7,9 @@
       v-for="(item, index) in items[this.index]"
       :key="index"
     >
+      <button v-if="enableLeft" v-on:click="didClickLeft">&lt;</button>
       {{ item }}
+      <button v-if="enableRight" v-on:click="didClickRight">&gt;</button>
     </div>
     <div class="addItem" v-on:click="addItem">Add Item</div>
   </div>
@@ -21,7 +23,9 @@ export default {
   props: {
     index: Number,
     person: String,
-    headerStyle: String
+    headerStyle: String,
+    enableLeft: Boolean,
+    enableRight: Boolean
   },
   methods: {
     addItem() {
@@ -33,6 +37,23 @@ export default {
       console.log("add item from: " + this.person + " " + itemText);
       this.$store.dispatch("addItem", { key: this.index, item: itemText });
       this.$forceUpdate();
+    },
+    didClickLeft() {
+      console.log("did click left");
+      if (!this.enableLeft) {
+        console.log("left not enabled. this should not happen..");
+        return;
+      }
+      // need index as key
+      // need card index
+      // need direction: left or right
+    },
+    didClickRight() {
+      console.log("did click right");
+      if (!this.enableRight) {
+        console.log("right not enabled. this should not happen..");
+        return;
+      }
     }
   },
   computed: {
