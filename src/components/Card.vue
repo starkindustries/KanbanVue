@@ -2,22 +2,47 @@
   <div class="card">
     <div class="cardHeader border" :style="headerStyle">{{ person }}</div>
     <div class="cardItem border">item1</div>
-    <div class="cardItem border">item2</div>
+    <div
+      class="cardItem border"
+      v-for="(item, index) in items[this.index]"
+      :key="index"
+    >
+      {{ item }}
+    </div>
     <div class="addItem" v-on:click="addItem">Add Item</div>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "Card",
   props: {
+    index: Number,
     person: String,
     headerStyle: String
   },
   methods: {
     addItem() {
-      var test = prompt("Please add item", "");
-      console.log("add item from: " + this.person + " " + test);
+      var itemText = prompt("Please add item", "");
+      if (!itemText || itemText === null || itemText === "") {
+        console.log("input empty");
+        return;
+      }
+      console.log("add item from: " + this.person + " " + itemText);
+      this.$store.dispatch("addItem", { key: this.index, item: itemText });
+      this.$forceUpdate();
+    }
+  },
+  computed: {
+    ...mapState({
+      items: "items"
+    }),
+    // other stuff
+    myItems() {
+      // figure out why this isn't working later
+      return this.items[this.index];
     }
   }
 };
