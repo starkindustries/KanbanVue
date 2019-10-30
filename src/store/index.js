@@ -29,9 +29,7 @@ export default new Vuex.Store({
 
         Vue.set(state.cards, payload.key, []);
       }
-      let items = state.cards;
-      items[payload.key].push(payload.item);
-      state.cards = items;
+      state.cards[payload.key].push(payload.item);
     },
     moveItem(state, payload) {
       // Check if target array is empty
