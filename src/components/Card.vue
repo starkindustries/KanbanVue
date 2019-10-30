@@ -1,8 +1,6 @@
 <template>
   <div class="card">
-    <div class="cardHeader border" :style="headerStyle">
-      {{ person }} | {{ numActions }}
-    </div>
+    <div class="cardHeader border" :style="headerStyle">{{ person }}</div>
     <div class="cardItem border">item1</div>
     <div
       class="cardItem border"
@@ -22,7 +20,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+// import { mapState } from "vuex";
 import { mapGetters } from "vuex";
 
 export default {
@@ -70,9 +68,10 @@ export default {
     }
   },
   computed: {
+    /*
     ...mapState({
       numActions: "actions"
-    }),
+    }),*/
     ...mapGetters({
       getItemsById: "getItemsById"
     })

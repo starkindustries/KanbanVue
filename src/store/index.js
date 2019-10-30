@@ -5,8 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    items: {},
-    actions: 0
+    items: {}
   },
   getters: {
     getItemsById: state => id => {
@@ -18,60 +17,39 @@ export default new Vuex.Store({
       console.log("got here: " + payload.key + " " + payload.item);
       if (!state.items[payload.key]) {
         console.log("array not yet defined");
-        state.items[payload.key] = [];
+
+        /*
+         * This line does not work because the property is not registered and will not be reactive
+         * state.items[payload.key] = [];
+         *
+         * https://vuejs.org/v2/guide/reactivity.html
+         * Due to the limitations of modern JavaScript (and the abandonment of Object.observe), Vue cannot detect property addition or deletion.
+         * It’s possible to add reactive properties to a nested object using the Vue.set(object, propertyName, value) method
+         */
+
+        Vue.set(state.items, payload.key, []);
       }
-      // state.items[payload.key].push(payload.item);
       let items = state.items;
       items[payload.key].push(payload.item);
       state.items = items;
-      state.actions += 1;
     },
-    moveLeft(state, payload) {
-      // verify payload key
-      if (payload.key < 1) {
-        console.log("Move left, invalid key: " + payload.key);
-        return;
-      }
-      // check if array empty
-      if (!state.items[payload.key - 1]) {
-        state.items[payload.key - 1] = [];
+    moveItem(state, payload) {
+      // Check if target array is empty
+      if (!state.items[payload.targetIndex]) {
+        Vue.set(state.items, payload.targetIndex, []);
       }
 
       // Verify item to move
       let itemToMove = state.items[payload.key][payload.itemIndex];
       if (!itemToMove) {
-        console.log("item to move invalid: " + itemToMove);
         return;
       }
 
-      // add item to adjacent card
-      state.items[payload.key - 1].push(itemToMove);
+      // Add item to target card
+      state.items[payload.targetIndex].push(itemToMove);
 
-      // remove item from current card
+      // Remove item from current card
       state.items[payload.key].splice(payload.itemIndex, 1);
-
-      state.actions += 1;
-    },
-    moveRight(state, payload) {
-      // verify payload key, check if adjacent list is defined
-      if (!state.items[payload.key + 1]) {
-        state.items[payload.key + 1] = [];
-      }
-
-      // Verify item to move
-      let itemToMove = state.items[payload.key][payload.itemIndex];
-      if (!itemToMove) {
-        console.log("item to move invalid: " + itemToMove);
-        return;
-      }
-
-      // add item to adjacent card
-      state.items[payload.key + 1].push(itemToMove);
-
-      // remove item from current card
-      state.items[payload.key].splice(payload.itemIndex, 1);
-
-      state.actions += 1;
     }
   },
   actions: {
@@ -79,12 +57,14 @@ export default new Vuex.Store({
       state.commit("addItem", payload);
     },
     moveLeft(state, payload) {
+      payload.targetIndex = payload.key - 1;
       console.log("move left: " + payload);
-      state.commit("moveLeft", payload);
+      state.commit("moveItem", payload);
     },
     moveRight(state, payload) {
+      payload.targetIndex = payload.key + 1;
       console.log("move right: " + payload);
-      state.commit("moveRight", payload);
+      state.commit("moveItem", payload);
     }
   },
   modules: {}
