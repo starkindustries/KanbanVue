@@ -5,17 +5,17 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    items: {}
+    cards: {}
   },
   getters: {
     getItemsById: state => id => {
-      return state.items[id];
+      return state.cards[id];
     }
   },
   mutations: {
     addItem(state, payload) {
       console.log("got here: " + payload.key + " " + payload.item);
-      if (!state.items[payload.key]) {
+      if (!state.cards[payload.key]) {
         console.log("array not yet defined");
 
         /*
@@ -27,29 +27,29 @@ export default new Vuex.Store({
          * It’s possible to add reactive properties to a nested object using the Vue.set(object, propertyName, value) method
          */
 
-        Vue.set(state.items, payload.key, []);
+        Vue.set(state.cards, payload.key, []);
       }
-      let items = state.items;
+      let items = state.cards;
       items[payload.key].push(payload.item);
-      state.items = items;
+      state.cards = items;
     },
     moveItem(state, payload) {
       // Check if target array is empty
-      if (!state.items[payload.targetIndex]) {
-        Vue.set(state.items, payload.targetIndex, []);
+      if (!state.cards[payload.targetIndex]) {
+        Vue.set(state.cards, payload.targetIndex, []);
       }
 
       // Verify item to move
-      let itemToMove = state.items[payload.key][payload.itemIndex];
+      let itemToMove = state.cards[payload.key][payload.itemIndex];
       if (!itemToMove) {
         return;
       }
 
       // Add item to target card
-      state.items[payload.targetIndex].push(itemToMove);
+      state.cards[payload.targetIndex].push(itemToMove);
 
       // Remove item from current card
-      state.items[payload.key].splice(payload.itemIndex, 1);
+      state.cards[payload.key].splice(payload.itemIndex, 1);
     }
   },
   actions: {
